@@ -1,0 +1,7 @@
+fastapi
+httpx[http2]
+streamlit
+uvicorn
+pydantic
+pydantic-settings
+fastmcp

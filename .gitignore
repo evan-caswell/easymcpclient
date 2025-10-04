@@ -1,0 +1,41 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.so
+*.dylib
+
+# Build outputs
+build/
+dist/
+.eggs/
+*.egg-info/
+
+# Environments
+.venv/
+.env
+.env.docker
+.env.*
+*.env
+
+# Tool caches
+.pytest_cache/
+.mypy_cache/
+.pyright/
+ruff_cache/
+.tox/
+.cache/
+coverage.xml
+htmlcov/
+
+# IDE settings
+.vscode/
+.idea/
+
+# Logs and data
+*.log
+*.sqlite3
+*.db
+
+# Misc
+notes.txt
+

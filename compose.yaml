@@ -1,0 +1,52 @@
+services:
+  mcp_gateway:
+    image: docker/mcp-gateway
+    command:
+      - --port=8080
+      - --transport=streaming
+      - --servers=tavily
+      - --secrets=docker-desktop:/run/secrets/api_secrets
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    # secrets:
+    #   - api_secrets
+
+  api:
+    build: .
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://api:8000/healthz" ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    depends_on:
+      - mcp_gateway
+    # secrets:
+    #   - api_secrets
+    env_file:
+      - .env.docker
+    models:
+      llm:
+        endpoint_var: LLM_MODEL_URL
+        model_var: LLM_MODEL_NAME
+
+  ui:
+    build: .
+    env_file:
+      - .env.docker
+    command: streamlit run ui/app.py --server.address=0.0.0.0 --server.port=8501
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
+
+# secrets:
+#   api_secrets:
+#     file: .env.docker
+
+models:
+  llm:
+    model: ai/granite-4.0-h-micro:latest
+
