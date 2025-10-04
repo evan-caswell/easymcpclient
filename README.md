@@ -26,7 +26,7 @@ This project delivers an end-to-end conversational assistant that combines a Fas
 ## Running Locally (without Docker Compose)
 1. Ensure Python 3.11+ (tested with 3.13) and install dependencies: `pip install -r requirements.txt`.
 2. Configure environment variables (e.g., `DMR_MCP_URL`, `LLM_MODEL_URL`, `LLM_MODEL_NAME`) via `.env`.
-3. **Important:** before starting the API, launch the MCP gateway using the command captured in `notes.txt`:
+3. **Important:** before starting the API, launch the MCP gateway using the command:
    ```bash
    docker mcp gateway run --port 8080 --transport streaming
    ```
