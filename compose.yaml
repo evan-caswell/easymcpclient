@@ -8,8 +8,6 @@ services:
       - --secrets=docker-desktop:/run/secrets/api_secrets
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    # secrets:
-    #   - api_secrets
 
   api:
     build: .
@@ -41,10 +39,6 @@ services:
       - "8501:8501"
     depends_on:
       - api
-
-# secrets:
-#   api_secrets:
-#     file: .env.docker
 
 models:
   llm:
