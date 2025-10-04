@@ -53,6 +53,15 @@ This project delivers an end-to-end conversational assistant that combines a Fas
    - `ui` on port 8501 for the Streamlit interface
 3. Visit `http://localhost:8501` to interact with the assistant.
 
+Docker Compose automatically injects the model endpoint and name into the API container when you use the long syntax models block:
+```yaml
+models:
+  llm:
+    endpoint_var: LLM_MODEL_URL
+    model_var: LLM_MODEL_NAME
+```
+See the Docker documentation for details: https://docs.docker.com/ai/compose/models-and-compose/
+
 ## Using the LLM Client
 The `LLMClient` abstraction (in `api/services/llm_client.py`) wraps an OpenAI-compatible chat endpoint while managing conversation history and tool execution. Typical workflow:
 
