@@ -25,7 +25,13 @@ This project delivers an end-to-end conversational assistant that combines a Fas
 
 ## Running Locally (without Docker Compose)
 1. Ensure Python 3.11+ (tested with 3.13) and install dependencies: `pip install -r requirements.txt`.
-2. Configure environment variables (e.g., `DMR_MCP_URL`, `LLM_MODEL_URL`, `LLM_MODEL_NAME`) via `.env`.
+2. Configure environment variables (e.g., `DMR_MCP_URL`, `LLM_MODEL_URL`, `LLM_MODEL_NAME`) via `.env`:
+   ```bash
+   DMR_MCP_URL=http://localhost:8080/mcp
+   API_BASE_URL=http://localhost:8000
+   LLM_MODEL_URL=http://localhost:12434/engines/llama.cpp/v1
+   LLM_MODEL_NAME=
+   ```
 3. **Important:** before starting the API, launch the MCP gateway using the command:
    ```bash
    docker mcp gateway run --port 8080 --transport streaming
@@ -42,7 +48,11 @@ This project delivers an end-to-end conversational assistant that combines a Fas
    It expects `API_BASE_URL` (default `http://localhost:8000`).
 
 ## Running with Docker Compose
-1. Populate `.env.docker` with the required values (provided defaults target the compose network).
+1. Populate `.env.docker` with the required values (provided defaults target the compose network):
+   ```bash
+   DMR_MCP_URL=http://mcp_gateway:8080/mcp
+   API_BASE_URL=http://api:8000
+   ```
 2. From the project root, start the stack:
    ```bash
    docker compose up --build
