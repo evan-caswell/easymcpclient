@@ -29,7 +29,7 @@ This project delivers an end-to-end conversational assistant that combines a Fas
    ```bash
    DMR_MCP_URL=http://localhost:8080/mcp
    API_BASE_URL=http://localhost:8000
-   LLM_MODEL_URL=http://localhost:12434/engines/llama.cpp/v1
+   LLM_MODEL_URL=http://localhost:12434/engines/llama.cpp/v1/
    LLM_MODEL_NAME=
    ```
 3. **Important:** before starting the API, launch the MCP gateway using the command:
