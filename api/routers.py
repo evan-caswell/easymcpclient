@@ -78,7 +78,7 @@ async def chat(
     response = await llm.generate(
         chat_request.prompt,
         thread_id=chat_request.thread_id,
-        enabled_tool_names=["tavily-search"],
+        enabled_tool_names=["tavily-search"], # <-- Tools available to LLM
         temperature=0.0,
     )
     return {"reply": response}

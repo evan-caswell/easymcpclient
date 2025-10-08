@@ -126,6 +126,7 @@ class LLMClient:
 
             if api_tools:
                 payload["tools"] = api_tools
+                payload["tool_choice"] = "auto"
 
             if response_schema:
                 payload["response_format"] = {
@@ -202,7 +203,7 @@ class LLMClient:
                             result = await tool_func(**arguments)
                         else:
                             result = tool_func(**arguments)
-                    except Exception as exc:  # noqa: BLE001
+                    except Exception as exc:
                         result = f"Error executing tool '{func_name}': {exc}"
 
                     tool_content = self._stringify_tool_result(result)
