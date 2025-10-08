@@ -19,9 +19,12 @@ This project delivers an end-to-end conversational assistant that combines a Fas
 - **Python 3.13** (see Dockerfile) with type hints and pydantic settings management.
 
 ## Prerequisites
+- Docker Model Runner with a model pulled from Docker Hub.
 - Docker Desktop with the Docker MCP Toolkit extension enabled.
 - At least one MCP server added in Docker Desktop (e.g., Tavily) so the gateway can proxy tool calls.
 - For servers that require credentials, populate the server's Configuration secrets section (Docker Desktop > Docker MCP Toolkit > your server > Configuration > Secrets) with the necessary key/value pairs so they are mounted for API and gateway containers.
+
+**Note:** This project was tested with qwen3:0.6B-Q4_K_M. A reasoning model is highly recommended to be used with this project.
 
 ## Running Locally (without Docker Compose)
 1. Ensure Python 3.11+ (tested with 3.13) and install dependencies: `pip install -r requirements.txt`.
