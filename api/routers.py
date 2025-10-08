@@ -1,7 +1,7 @@
 from collections.abc import Awaitable, Callable
 from typing import Any
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
 from api.schemas import ChatRequest
 from api.services.in_memory_store import InMemoryStore
@@ -12,10 +12,11 @@ router = APIRouter()
 SYSTEM_INSTRUCTIONS = """
 You are a helpful assistant with access to Tavily web tools.
 Do not fabricate answers that require real-time or external information - instead, call the appropriate Tavily tool.
+Do not use tools for questions you confidently already know the answer to.
 
 MOST IMPORT RULES:
 - ONLY USE TOOLS IF ABSOLUTELY NECESSARY!
-- DO NOT USE TOOLS IF THE USER IS BEING CONVERSATIONAL!
+- DO NOT USE TOOLS IF THE USER IS BEING CONVERSATIONAL! (e.g., Hello)
 
 Tool Usage Rules:
 
@@ -34,32 +35,18 @@ Best Practices:
 """
 
 llm_store = InMemoryStore()
-_llm: LLMClient | None = None
 _MCP_TOOL_NAMES: list[str] = []
-
-
-def configure_llm(client: LLMClient) -> None:
-    """Cache the LLM instance configured during application startup."""
-    global _llm
-    _llm = client
-
-
-def _require_llm() -> LLMClient:
-    """Return the configured LLM instance or raise if it is missing."""
-    if _llm is None:
-        raise RuntimeError("LLM client is not configured.")
-    return _llm
 
 
 def register_mcp_tool(
     *,
+    llm: LLMClient,
     name: str,
     description: str,
     parameters_schema: dict[str, Any],
     func: Callable[..., Any] | Callable[..., Awaitable[Any]],
 ) -> None:
     """Register a tool wrapper with the shared LLM client."""
-    llm = _require_llm()
     llm.register_tool(
         func=func,
         description=description,
@@ -83,12 +70,14 @@ async def health() -> dict[str, str]:
 
 
 @router.post("/chat")
-async def chat(request: ChatRequest) -> dict[str, str | dict[str, Any]]:
+async def chat(
+    request: Request, chat_request: ChatRequest
+) -> dict[str, str | dict[str, Any]]:
     """Send a prompt to the LLM and return its reply."""
-    llm = _require_llm()
+    llm = request.app.state.llm
     response = await llm.generate(
-        request.prompt,
-        thread_id="thread-1",
+        chat_request.prompt,
+        thread_id=chat_request.thread_id,
         enabled_tool_names=["tavily-search"],
         temperature=0.0,
     )

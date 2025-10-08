@@ -40,5 +40,5 @@ services:
 
 models:
   llm:
-    model: ai/granite-4.0-h-micro:latest
+    model: ai/qwen3:0.6B-Q4_K_M
 

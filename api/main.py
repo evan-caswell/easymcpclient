@@ -8,7 +8,6 @@ from fastmcp.client.transports import StreamableHttpTransport
 
 from api.routers import (
     SYSTEM_INSTRUCTIONS,
-    configure_llm,
     llm_store,
     register_mcp_tool,
     router,
@@ -32,7 +31,6 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         timeout=60.0,
         instructions=SYSTEM_INSTRUCTIONS,
     )
-    configure_llm(llm)
     app.state.llm = llm
 
     try:
@@ -78,6 +76,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
                 }
 
                 register_mcp_tool(
+                    llm=llm,
                     name=tool_name,
                     description=tool.description or "",
                     parameters_schema=parameters_schema,
